@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superhero App monolito</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <h1 class="text-center mt-4 mb-4">Superhero App monolito</h1>
+
+    <h2 class="text-center">Héroes</h2>
+    <div class="container">
+        <div class="row" id="heroes-list"></div>
+    </div>
+
+    <h2 class="text-center mt-4">Amenazas</h2>
+    <div class="container">
+        <div class="row" id="threats-list"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const fetchData = async () => {
+            try {
+                const [heroesResponse, threatsResponse] = await Promise.all([
+                    fetch("http://localhost:8084/heroes"),
+                    fetch("http://localhost:8084/threats")
+                ]);
+
+                const heroes = await heroesResponse.json();
+                const threats = await threatsResponse.json();
+
+                const heroesList = document.getElementById('heroes-list');
+                heroes.forEach(hero => {
+                    const col = document.createElement('div');
+                    col.classList.add('col-md-3', 'mb-4');
+                    col.innerHTML = `
+                        <div class="card">
+                            <img src="http://localhost:8084/img/${hero.img}" class="card-img-top" alt="${hero.displayName}">
+                            <div class="card-body">
+                                <h5 class="card-title">${hero.displayName}</h5>
+                                <p class="card-text">${hero.type} - Powers: ${hero.powers.join(', ')}</p>
+                            </div>
+                        </div>
+                    `;
+                    heroesList.appendChild(col);
+                });
+
+                const threatsList = document.getElementById('threats-list');
+                threats.forEach(threat => {
+                    const col = document.createElement('div');
+                    col.classList.add('col-md-3', 'mb-4');
+                    col.innerHTML = `
+                        <div class="card">
+                            <img src="http://localhost:8084/img/${threat.img}" class="card-img-top" alt="${threat.displayName}">
+                            <div class="card-body">
+                                <h5 class="card-title">${threat.displayName}</h5>
+                                <p class="card-text">Necessary Powers: ${threat.necessaryPowers.join(', ')}</p>
+                            </div>
+                        </div>
+                    `;
+                    threatsList.appendChild(col);
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    </script>
+</body>
+</html>
