@@ -26,8 +26,8 @@
         const fetchData = async () => {
             try {
                 const [heroesResponse, threatsResponse] = await Promise.all([
-                    fetch("http://localhost:8084/heroes"),
-                    fetch("http://localhost:8084/threats")
+                    fetch("http://192.168.0.9:3000/heroes"),
+                    fetch("http://192.168.0.9:3000/threats")
                 ]);
 
                 const heroes = await heroesResponse.json();
@@ -39,7 +39,7 @@
                     col.classList.add('col-md-3', 'mb-4');
                     col.innerHTML = `
                         <div class="card">
-                            <img src="http://localhost:8084/img/${hero.img}" class="card-img-top" alt="${hero.displayName}">
+                            <img src="http://192.168.0.9:3000/img/${hero.img}" class="card-img-top" alt="${hero.displayName}">
                             <div class="card-body">
                                 <h5 class="card-title">${hero.displayName}</h5>
                                 <p class="card-text">${hero.type} - Powers: ${hero.powers.join(', ')}</p>
@@ -55,7 +55,7 @@
                     col.classList.add('col-md-3', 'mb-4');
                     col.innerHTML = `
                         <div class="card">
-                            <img src="http://localhost:8084/img/${threat.img}" class="card-img-top" alt="${threat.displayName}">
+                            <img src="http://192.168.0.9:3000/img/${threat.img}" class="card-img-top" alt="${threat.displayName}">
                             <div class="card-body">
                                 <h5 class="card-title">${threat.displayName}</h5>
                                 <p class="card-text">Necessary Powers: ${threat.necessaryPowers.join(', ')}</p>
